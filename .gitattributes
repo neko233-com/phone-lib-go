@@ -1,0 +1,9 @@
+# Normalize text files to LF in the repository and CI.
+* text=auto eol=lf
+
+# Binary data and artifacts must never be line-ending converted.
+*.dat binary
+*.exe binary
+*.png binary
+*.jpg binary
+*.gif binary

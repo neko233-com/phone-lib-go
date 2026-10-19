@@ -1,0 +1,19 @@
+# Binaries
+/phone
+/phone.exe
+/bin/
+/cmd/phone/phone
+/cmd/phone/phone.exe
+*.test
+*.out
+coverage.txt
+
+# Editors
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Scratch
+/.scratch/
+/tmp/
