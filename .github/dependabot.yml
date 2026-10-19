@@ -5,6 +5,10 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # x/text v0.43+ requires Go 1.26; this module still supports Go 1.25.
+      - dependency-name: "golang.org/x/text"
+        versions: [">= 0.43.0"]
 
   - package-ecosystem: github-actions
     directory: "/"
