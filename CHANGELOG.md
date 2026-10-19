@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-19
+
+### Fixed
+
+- Release workflow: the annotated-tag version check compared `v0.2.0` (from the
+  CLI output) with the bare `0.2.0` tag version and failed; the `v` prefix is
+  now stripped before comparison.
+- Release workflow: `workflow_dispatch` was added so an existing tag can be
+  published or retried from the Actions UI. Manual run for `v0.2.0` created the
+  missing GitHub release.
+- Documented that annotated tag messages containing Markdown headings need
+  `git tag --cleanup=verbatim`, otherwise Git strips lines starting with `#`.
+
+### Changed
+
+- Dependabot ignores `golang.org/x/text >= 0.42.0`, because those releases
+  require Go 1.26 while this module still supports Go 1.25.
+
 ## [0.2.0] - 2026-10-19
 
 ### Added
@@ -70,6 +88,7 @@ Initial release.
 - MIT license, third-party NOTICE, GitHub Actions CI (Go 1.25/1.26/1.27) and a
   Makefile with build/test/race/vet/fmt/run-demo targets.
 
-[Unreleased]: https://github.com/neko233-com/phone-lib-go/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/neko233-com/phone-lib-go/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/neko233-com/phone-lib-go/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/neko233-com/phone-lib-go/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/neko233-com/phone-lib-go/releases/tag/v0.1.0

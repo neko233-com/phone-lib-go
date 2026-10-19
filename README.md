@@ -157,7 +157,7 @@ go run ./cmd/phone --countries
 
 # 版本信息
 go run ./cmd/phone --version
-# phone-lib-go v0.2.0
+# phone-lib-go v0.2.1
 ```
 
 选项可以写在号码前面或后面，两种写法等价：
@@ -172,7 +172,7 @@ phone --json --country CN 13128500205
 | `-country <hint>` | 国家/地区提示，供国内格式号码使用：ISO 代码 `CN`、区号 `86`/`+86`、中文名 `中国`、英文名 `United States`、别名 `香港`/`USA` |
 | `-json` | 以缩进 JSON 输出完整 `Info` |
 | `-countries` | 输出国家/地区对照表（ISO、区号、中文名、英文名、旗帜），忽略号码参数 |
-| `-version` | 输出 `phone-lib-go v0.2.0` |
+| `-version` | 输出 `phone-lib-go v0.2.1` |
 | `-h`, `--help` | 输出用法说明 |
 
 退出码：`0` 表示查询成功（解析成功但号码无效也是 `0`，输出中「校验」为 `无效`）；参数错误、无法解析或国家提示非法返回 `1`，错误信息写入 stderr。
@@ -233,7 +233,7 @@ curl -i 'http://127.0.0.1:8080/api/lookup?number=abc&country=CN'
 | `func CountryByISO(iso string) (Country, bool)` | 按 ISO 3166-1 alpha-2 查询国家/地区 |
 | `func CountryByCallingCode(code int) (Country, bool)` | 按国际区号查询主国家，如 `86` → 中国、`1` → 美国 |
 | `func ChinaDataVersion() string` | 中国大陆号段数据版本，如 `"2025-02"` |
-| `const Version = "0.2.0"` | 库版本号；CLI `--version` 直接读取它，发布流程用它校验 tag |
+| `const Version = "0.2.1"` | 库版本号；CLI `--version` 直接读取它，发布流程用它校验 tag |
 | `func MetadataVersion() string` | 上游 Google libphonenumber 元数据版本，如 `"v9.0.40"` |
 
 ### Info 字段
@@ -379,7 +379,7 @@ Makefile 快捷命令：`make build`、`make test`、`make race`、`make vet`、
 
 ## 发布流程
 
-版本号以代码中的 `phone.Version` 为准（当前 `0.2.0`），CLI `--version` 直接读取它。发布由 annotated tag 驱动：
+版本号以代码中的 `phone.Version` 为准（当前 `0.2.1`），CLI `--version` 直接读取它。发布由 annotated tag 驱动：
 
 1. 更新代码与 `phone.Version`，把 `CHANGELOG.md` 的 `[Unreleased]` 整理成对应版本与日期，合并到 `main` 并通过 CI。
 2. 创建带说明的 annotated tag 并推送：
@@ -399,7 +399,7 @@ Makefile 快捷命令：`make build`、`make test`、`make race`、`make vet`、
    - 使用 tag 说明（`gh release create --notes-from-tag`）创建 GitHub Release，若该 release 已存在则跳过。
 4. 在 GitHub Releases 页面确认发布内容。
 
-已经推送的 tag 如需补发或重跑发布流程，可在 GitHub Actions 中选择 **Release → Run workflow** 并填入 tag（例如 `v0.2.0`）；工作流会检出该 tag 并执行同样的校验与发布步骤。
+已经推送的 tag 如需补发或重跑发布流程，可在 GitHub Actions 中选择 **Release → Run workflow** 并填入 tag（例如 `v0.2.1`）；工作流会检出该 tag 并执行同样的校验与发布步骤。
 
 版本遵循 SemVer，tag 使用 `vX.Y.Z` 形式，`phone.Version` 不带 `v` 前缀。
 
@@ -414,3 +414,4 @@ Makefile 快捷命令：`make build`、`make test`、`make race`、`make vet`、
 感谢以上项目及其维护者。完整第三方声明见 [NOTICE.md](NOTICE.md)。
 
 贡献指南见 [CONTRIBUTING.md](CONTRIBUTING.md)；安全漏洞请按 [SECURITY.md](SECURITY.md) 通过 GitHub 私密报告，不要公开提交 issue。
+

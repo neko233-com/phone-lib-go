@@ -39,9 +39,10 @@ Releases are tag-driven:
 4. `.github/workflows/release.yml` verifies that the tag matches
    `phone.Version`, runs the race tests, and creates the GitHub release from the
    tag message. To publish or re-run an existing tag, use **Actions → Release →
-   Run workflow** and enter the tag (for example `v0.2.0`).
+   Run workflow** and enter the tag (for example `v0.2.1`).
 
 ## Code of conduct
 
 Be respectful and constructive. Harassment or personal attacks are not
 tolerated.
+
