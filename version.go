@@ -1,4 +1,4 @@
 package phone
 
 // Version is the released version of this library.
-const Version = "0.2.1"
+const Version = "0.3.0"

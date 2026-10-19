@@ -5,7 +5,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/neko233-com/phone-lib-go.svg)](https://pkg.go.dev/github.com/neko233-com/phone-lib-go)
 [![Release](https://img.shields.io/github/v/release/neko233-com/phone-lib-go.svg)](https://github.com/neko233-com/phone-lib-go/releases)
 [![CI](https://github.com/neko233-com/phone-lib-go/actions/workflows/ci.yml/badge.svg)](https://github.com/neko233-com/phone-lib-go/actions/workflows/ci.yml)
-[![Go Version](https://img.shields.io/badge/Go-1.25%2B-00ADD8?logo=go)](go.mod)
+[![Go Version](https://img.shields.io/badge/Go-1.26%2B-00ADD8?logo=go)](go.mod)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 `phone-lib-go` 用一行代码解析任意格式的电话号码，返回标准格式、国家/地区、归属地（省/市）、运营商、号段、区号、邮编、号码类型与时区。全球数据来自 Google libphonenumber 元数据，中国大陆手机号还能定位到城市级别。
@@ -32,7 +32,7 @@ info, err := phone.Lookup("13128500205", phone.WithCountry("CN"))
 go get github.com/neko233-com/phone-lib-go
 ```
 
-要求 Go 1.25 或更高版本。
+要求 Go 1.26 或更高版本。
 
 ## 快速开始
 
@@ -157,7 +157,7 @@ go run ./cmd/phone --countries
 
 # 版本信息
 go run ./cmd/phone --version
-# phone-lib-go v0.2.1
+# phone-lib-go v0.3.0
 ```
 
 选项可以写在号码前面或后面，两种写法等价：
@@ -172,7 +172,7 @@ phone --json --country CN 13128500205
 | `-country <hint>` | 国家/地区提示，供国内格式号码使用：ISO 代码 `CN`、区号 `86`/`+86`、中文名 `中国`、英文名 `United States`、别名 `香港`/`USA` |
 | `-json` | 以缩进 JSON 输出完整 `Info` |
 | `-countries` | 输出国家/地区对照表（ISO、区号、中文名、英文名、旗帜），忽略号码参数 |
-| `-version` | 输出 `phone-lib-go v0.2.1` |
+| `-version` | 输出 `phone-lib-go v0.3.0` |
 | `-h`, `--help` | 输出用法说明 |
 
 退出码：`0` 表示查询成功（解析成功但号码无效也是 `0`，输出中「校验」为 `无效`）；参数错误、无法解析或国家提示非法返回 `1`，错误信息写入 stderr。
@@ -233,7 +233,7 @@ curl -i 'http://127.0.0.1:8080/api/lookup?number=abc&country=CN'
 | `func CountryByISO(iso string) (Country, bool)` | 按 ISO 3166-1 alpha-2 查询国家/地区 |
 | `func CountryByCallingCode(code int) (Country, bool)` | 按国际区号查询主国家，如 `86` → 中国、`1` → 美国 |
 | `func ChinaDataVersion() string` | 中国大陆号段数据版本，如 `"2025-02"` |
-| `const Version = "0.2.1"` | 库版本号；CLI `--version` 直接读取它，发布流程用它校验 tag |
+| `const Version = "0.3.0"` | 库版本号；CLI `--version` 直接读取它，发布流程用它校验 tag |
 | `func MetadataVersion() string` | 上游 Google libphonenumber 元数据版本，如 `"v9.0.40"` |
 
 ### Info 字段
@@ -356,7 +356,7 @@ open http://127.0.0.1:8080). Version helpers: `phone.Version`,
 `phone.MetadataVersion()` (libphonenumber metadata `v9.0.40`) and
 `phone.ChinaDataVersion()` (China 号段 data `2025-02`).
 
-Requires Go 1.25+. MIT licensed; see [LICENSE](LICENSE) and
+Requires Go 1.26+. MIT licensed; see [LICENSE](LICENSE) and
 [NOTICE.md](NOTICE.md) for third-party attributions.
 
 ## 开发
@@ -373,24 +373,24 @@ Makefile 快捷命令：`make build`、`make test`、`make race`、`make vet`、
 
 ### 持续集成与依赖
 
-- **CI**（`.github/workflows/ci.yml`）：push / PR 触发（同一分支的新运行会取消旧运行）。Ubuntu 上运行 Go 1.25.x / 1.26.x / 1.27.x 矩阵，执行 gofmt 检查、`go mod tidy` 校验、`go vet ./...`、`go build ./...` 与 `go test -race -shuffle=on ./...`；另有 `govulncheck` 漏洞扫描，以及在 macOS 与 Windows 最新版上用 Go 1.27.x 构建并运行测试。
+- **CI**（`.github/workflows/ci.yml`）：push / PR 触发（同一分支的新运行会取消旧运行）。Ubuntu 上运行 Go 1.26.x / 1.27.x 矩阵，执行 gofmt 检查、`go mod tidy` 校验、`go vet ./...`、`go build ./...` 与 `go test -race -shuffle=on ./...`；另有 `govulncheck` 漏洞扫描，以及在 macOS 与 Windows 最新版上用 Go 1.27.x 构建并运行测试。
 - **Fuzz**（`.github/workflows/fuzz.yml`）：每周一 03:00 UTC 自动运行 `FuzzLookup` 约 90 秒，也可通过 `workflow_dispatch` 手动触发。
 - **Dependabot**（`.github/dependabot.yml`）：每周检查 Go modules 与 GitHub Actions 更新，最多同时打开 5 个 PR。
 
 ## 发布流程
 
-版本号以代码中的 `phone.Version` 为准（当前 `0.2.1`），CLI `--version` 直接读取它。发布由 annotated tag 驱动：
+版本号以代码中的 `phone.Version` 为准（当前 `0.3.0`），CLI `--version` 直接读取它。发布由 annotated tag 驱动：
 
 1. 更新代码与 `phone.Version`，把 `CHANGELOG.md` 的 `[Unreleased]` 整理成对应版本与日期，合并到 `main` 并通过 CI。
 2. 创建带说明的 annotated tag 并推送：
 
    ```bash
-   git tag -a v0.2.1 -m "v0.2.1: <本次发布说明>"
-   git push origin v0.2.1
+   git tag -a v0.3.1 -m "v0.3.1: <本次发布说明>"
+   git push origin v0.3.1
    ```
 
    如果发布说明包含 Markdown 标题（以 `#` 开头的行），请使用
-   `git tag -a v0.2.1 --cleanup=verbatim -F release-notes.md`，否则 Git 会把
+   `git tag -a v0.3.1 --cleanup=verbatim -F release-notes.md`，否则 Git 会把
    这些行当作注释删除。
 
 3. 推送 `v*` tag 会触发 `.github/workflows/release.yml`：
@@ -399,7 +399,7 @@ Makefile 快捷命令：`make build`、`make test`、`make race`、`make vet`、
    - 使用 tag 说明（`gh release create --notes-from-tag`）创建 GitHub Release，若该 release 已存在则跳过。
 4. 在 GitHub Releases 页面确认发布内容。
 
-已经推送的 tag 如需补发或重跑发布流程，可在 GitHub Actions 中选择 **Release → Run workflow** 并填入 tag（例如 `v0.2.1`）；工作流会检出该 tag 并执行同样的校验与发布步骤。
+已经推送的 tag 如需补发或重跑发布流程，可在 GitHub Actions 中选择 **Release → Run workflow** 并填入 tag（例如 `v0.3.0`）；工作流会检出该 tag 并执行同样的校验与发布步骤。
 
 版本遵循 SemVer，tag 使用 `vX.Y.Z` 形式，`phone.Version` 不带 `v` 前缀。
 
@@ -414,4 +414,5 @@ Makefile 快捷命令：`make build`、`make test`、`make race`、`make vet`、
 感谢以上项目及其维护者。完整第三方声明见 [NOTICE.md](NOTICE.md)。
 
 贡献指南见 [CONTRIBUTING.md](CONTRIBUTING.md)；安全漏洞请按 [SECURITY.md](SECURITY.md) 通过 GitHub 私密报告，不要公开提交 issue。
+
 

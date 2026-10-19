@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-19
+
+### Changed
+
+- Minimum supported Go version is now **1.26** (was 1.25), required by
+  `golang.org/x/text` v0.43. CI now runs Go 1.26.x and 1.27.x; the macOS and
+  Windows jobs stay on Go 1.27.x.
+- Upgraded `golang.org/x/text` from v0.41.0 to v0.43.0 and
+  `google.golang.org/protobuf` from v1.36.11 to v1.36.12.
+- Removed the temporary Dependabot ignore rule for `golang.org/x/text`, so
+  dependency updates flow normally again.
+- `README.md`, `CONTRIBUTING.md` and `SECURITY.md` updated for Go 1.26 and
+  v0.3.0.
+
+### Notes
+
+- No public API or embedded data changes in this release; it is a maintenance
+  and toolchain update. Users who must stay on Go 1.25 can keep using v0.2.1.
+
 ## [0.2.1] - 2026-10-19
 
 ### Fixed
@@ -88,7 +107,8 @@ Initial release.
 - MIT license, third-party NOTICE, GitHub Actions CI (Go 1.25/1.26/1.27) and a
   Makefile with build/test/race/vet/fmt/run-demo targets.
 
-[Unreleased]: https://github.com/neko233-com/phone-lib-go/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/neko233-com/phone-lib-go/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/neko233-com/phone-lib-go/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/neko233-com/phone-lib-go/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/neko233-com/phone-lib-go/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/neko233-com/phone-lib-go/releases/tag/v0.1.0
