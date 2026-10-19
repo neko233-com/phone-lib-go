@@ -395,6 +395,8 @@ Makefile 快捷命令：`make build`、`make test`、`make race`、`make vet`、
    - 使用 tag 说明（`gh release create --notes-from-tag`）创建 GitHub Release，若该 release 已存在则跳过。
 4. 在 GitHub Releases 页面确认发布内容。
 
+已经推送的 tag 如需补发或重跑发布流程，可在 GitHub Actions 中选择 **Release → Run workflow** 并填入 tag（例如 `v0.2.0`）；工作流会检出该 tag 并执行同样的校验与发布步骤。
+
 版本遵循 SemVer，tag 使用 `vX.Y.Z` 形式，`phone.Version` 不带 `v` 前缀。
 
 ## 许可证与致谢

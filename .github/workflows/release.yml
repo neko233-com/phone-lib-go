@@ -3,17 +3,27 @@ name: Release
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to publish (for example v0.2.0)"
+        required: true
+        type: string
 
 permissions:
   contents: write
 
 jobs:
   release:
-    name: Release ${{ github.ref_name }}
+    name: Release ${{ github.event.inputs.tag || github.ref_name }}
     runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ github.event.inputs.tag || github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: ${{ env.RELEASE_TAG }}
 
       - name: Set up Go
         uses: actions/setup-go@v7
@@ -22,10 +32,19 @@ jobs:
           cache: true
           cache-dependency-path: go.sum
 
+      - name: Verify tag format
+        run: |
+          if ! printf '%s' "$RELEASE_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "invalid release tag: ${RELEASE_TAG} (expected vX.Y.Z)" >&2
+            exit 1
+          fi
+          echo "releasing ${RELEASE_TAG}"
+
       - name: Verify tag matches library version
         run: |
-          tag_version="${GITHUB_REF_NAME#v}"
+          tag_version="${RELEASE_TAG#v}"
           cli_version="$(go run ./cmd/phone --version | awk '{print $2}')"
+          cli_version="${cli_version#v}"
           if [ "$tag_version" != "$cli_version" ]; then
             echo "tag v${tag_version} does not match phone.Version ${cli_version}" >&2
             exit 1
@@ -39,11 +58,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
-            echo "release ${GITHUB_REF_NAME} already exists; nothing to do"
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "release ${RELEASE_TAG} already exists; nothing to do"
           else
-            gh release create "$GITHUB_REF_NAME" \
-              --title "$GITHUB_REF_NAME" \
+            gh release create "$RELEASE_TAG" \
+              --title "$RELEASE_TAG" \
               --notes-from-tag \
               --verify-tag
           fi
