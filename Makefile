@@ -27,7 +27,8 @@ build:
 test:
 	$(GO) test ./...
 
-## race: run the unit tests with the race detector.
+## race: run the unit tests with the race detector (requires a C compiler;
+##        GitHub Actions CI runs this on Linux).
 race:
 	$(GO) test -race ./...
 

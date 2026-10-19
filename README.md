@@ -327,7 +327,7 @@ Requires Go 1.25+. MIT licensed; see [LICENSE](LICENSE) and
 
 ```bash
 go test ./...        # 单元测试
-go test -race ./...  # 竞态检测
+go test -race ./...  # 竞态检测（需要 C 编译器；GitHub Actions CI 中会执行）
 go vet ./...         # 静态检查
 go run ./cmd/phone --country CN 13128500205
 ```
