@@ -389,6 +389,10 @@ Makefile 快捷命令：`make build`、`make test`、`make race`、`make vet`、
    git push origin v0.2.1
    ```
 
+   如果发布说明包含 Markdown 标题（以 `#` 开头的行），请使用
+   `git tag -a v0.2.1 --cleanup=verbatim -F release-notes.md`，否则 Git 会把
+   这些行当作注释删除。
+
 3. 推送 `v*` tag 会触发 `.github/workflows/release.yml`：
    - 校验 tag 版本（去掉 `v` 前缀）与 `phone.Version` 完全一致，不一致则失败；
    - 运行 `go test -race -shuffle=on ./...`；

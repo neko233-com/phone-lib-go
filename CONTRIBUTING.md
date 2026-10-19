@@ -33,6 +33,9 @@ Releases are tag-driven:
 2. Commit and push to `main`.
 3. Create an **annotated** tag whose message is the release note:
    `git tag -a vX.Y.Z -m "..."` and `git push origin vX.Y.Z`.
+   If the note contains Markdown headings (lines starting with `#`), add
+   `--cleanup=verbatim` and use `-F notes.md`; otherwise Git strips those lines
+   as comments.
 4. `.github/workflows/release.yml` verifies that the tag matches
    `phone.Version`, runs the race tests, and creates the GitHub release from the
    tag message. To publish or re-run an existing tag, use **Actions → Release →
