@@ -25,4 +25,8 @@
 // International-format numbers do not need a country hint:
 //
 //	info, err := phone.Lookup("+8613128500205")
+//
+// Version, MetadataVersion and ChinaDataVersion report the library and embedded
+// data versions, which services can log or expose to show which snapshots they
+// are using.
 package phone

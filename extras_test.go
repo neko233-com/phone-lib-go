@@ -106,3 +106,35 @@ func TestLookupTelURIErrorIsNotCountryRequired(t *testing.T) {
 		t.Fatalf("tel: URI should not be treated as national format: %v", err)
 	}
 }
+
+func TestChinaAreaCodeNormalization(t *testing.T) {
+	t.Parallel()
+
+	// Upstream stores the Xilin Gol area code as the malformed "00479".
+	info, err := phone.Lookup("13030450000", phone.WithCountry("CN"))
+	if err != nil {
+		t.Fatalf("Lookup: %v", err)
+	}
+	if info.Province != "内蒙古" || info.City != "锡林郭勒" {
+		t.Errorf("location = %q/%q, want 内蒙古/锡林郭勒", info.Province, info.City)
+	}
+	if info.AreaCode != "0479" {
+		t.Errorf("AreaCode = %q, want 0479", info.AreaCode)
+	}
+	if info.Prefix != "130" {
+		t.Errorf("Prefix = %q, want 130", info.Prefix)
+	}
+}
+
+func TestChinaZipCodePadding(t *testing.T) {
+	t.Parallel()
+
+	// Upstream stores this Tangshan postal code as "63000".
+	info, err := phone.Lookup("19912345678", phone.WithCountry("CN"))
+	if err != nil {
+		t.Fatalf("Lookup: %v", err)
+	}
+	if info.ZipCode != "063000" {
+		t.Errorf("ZipCode = %q, want 063000", info.ZipCode)
+	}
+}

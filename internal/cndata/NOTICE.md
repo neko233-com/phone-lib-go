@@ -38,5 +38,22 @@ province, city, zip code and area code are real 号段 data. `Lookup` returns th
 with `CarrierType` 0, for which `CarrierName(0)` is the empty string; callers
 that need a carrier estimate can fall back to libphonenumber in that case.
 
-The Go code in this directory (`cndata.go`, `cndata_test.go`) is part of
-`phone-lib-go`; the MIT notice above applies to the embedded data.
+### Data-quality notes
+
+A full audit of the embedded snapshot (`TestDataQuality` in
+`quality_test.go`) reports:
+
+- 517,259 raw rows, of which 517,258 are returnable 号段 rows and 1 is the
+  filtered metadata row.
+- All prefixes are 7-digit, sorted and unique; returnable prefixes span
+  1300000–1999979 (the metadata row is 9999999).
+- Every returnable row has a non-empty province and city. Zip codes are 5 or 6
+  digits on every row. Area codes are 3–5 characters, start with `0` and
+  otherwise contain only digits.
+- Known upstream quirk: 509 returnable rows, all `内蒙古/锡林郭勒`, carry the
+  five-digit area code `00479` (the real code is `0479`). The snapshot is
+  embedded unmodified, so the value is passed through as-is.
+
+The Go code in this directory (`cndata.go`, `cndata_test.go`,
+`quality_test.go`) is part of `phone-lib-go`; the MIT notice above applies to the
+embedded data.

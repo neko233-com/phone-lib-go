@@ -218,7 +218,7 @@ func enrich(info *Info, num *pn.PhoneNumber) {
 				info.Carrier = name
 			}
 			if rec.AreaCode != "" {
-				info.AreaCode = rec.AreaCode
+				info.AreaCode = normalizeChinaAreaCode(rec.AreaCode)
 			}
 			info.Location = joinChinaLocation(rec.Province, rec.City)
 		}
@@ -329,6 +329,17 @@ func normalizeChinaZip(zip string) string {
 		zip = "0" + zip
 	}
 	return zip
+}
+
+// normalizeChinaAreaCode repairs the one known upstream anomaly: 509 rows in
+// Xilin Gol (锡林郭勒) carry "00479" instead of the real area code "0479".
+// Chinese area codes are three or four digits including the leading zero, so a
+// five-digit code beginning with "00" has one zero too many.
+func normalizeChinaAreaCode(areaCode string) string {
+	if len(areaCode) == 5 && strings.HasPrefix(areaCode, "00") {
+		return areaCode[1:]
+	}
+	return areaCode
 }
 
 // normalizeChinaLocation turns libphonenumber's administratively complete

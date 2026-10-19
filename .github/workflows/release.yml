@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Release ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version: "1.27.x"
+          cache: true
+          cache-dependency-path: go.sum
+
+      - name: Verify tag matches library version
+        run: |
+          tag_version="${GITHUB_REF_NAME#v}"
+          cli_version="$(go run ./cmd/phone --version | awk '{print $2}')"
+          if [ "$tag_version" != "$cli_version" ]; then
+            echo "tag v${tag_version} does not match phone.Version ${cli_version}" >&2
+            exit 1
+          fi
+          echo "tag v${tag_version} matches phone.Version"
+
+      - name: Test
+        run: go test -race -shuffle=on ./...
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "release ${GITHUB_REF_NAME} already exists; nothing to do"
+          else
+            gh release create "$GITHUB_REF_NAME" \
+              --title "$GITHUB_REF_NAME" \
+              --notes-from-tag \
+              --verify-tag
+          fi

@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-19
+
+### Added
+
+- `phone.Version` (also exposed by the CLI) and `phone.MetadataVersion()`, which
+  reports the embedded libphonenumber metadata version (`v9.0.40`).
+- `examples/web`: a zero-dependency 114-style web demo with an inline search
+  page and a JSON endpoint (`/api/lookup`), built on `net/http`.
+- Tag-driven release automation: pushing an annotated `vX.Y.Z` tag runs
+  `.github/workflows/release.yml`, verifies the tag against `phone.Version`,
+  runs the race tests and creates the GitHub release from the tag message.
+- Weekly fuzz workflow (`.github/workflows/fuzz.yml`) for `FuzzLookup`.
+- Dependabot configuration for Go modules and GitHub Actions.
+- `SECURITY.md` and `CONTRIBUTING.md` with the release process.
+
+### Changed
+
+- CI now runs on Go 1.25/1.26/1.27 on Ubuntu with `gofmt`, `go mod tidy`,
+  `go vet`, `go build` and `go test -race -shuffle=on`, plus build/test jobs on
+  macOS and Windows, and a `govulncheck` job.
+- Test suite expanded with all-region example numbers (245 countries/regions),
+  shared calling-code cases, CLI behavior tests, metadata-version assertions
+  and China 号段 data-quality invariants.
+- Documentation updated for the web demo, tag-driven releases, data version
+  APIs and the new CI setup.
+
+### Fixed
+
+- Mainland China area code `0479` (Xilin Gol, Inner Mongolia): 509 upstream rows
+  store it as `00479`; the library now normalizes it to `0479`.
+- Mainland China postal codes that lost a leading zero upstream (for example
+  `63000`) are padded back to six digits.
+
 ## [0.1.0] - 2026-10-19
 
 Initial release.
@@ -37,5 +70,6 @@ Initial release.
 - MIT license, third-party NOTICE, GitHub Actions CI (Go 1.25/1.26/1.27) and a
   Makefile with build/test/race/vet/fmt/run-demo targets.
 
-[Unreleased]: https://github.com/neko233-com/phone-lib-go/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/neko233-com/phone-lib-go/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/neko233-com/phone-lib-go/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/neko233-com/phone-lib-go/releases/tag/v0.1.0

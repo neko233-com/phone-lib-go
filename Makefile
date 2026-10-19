@@ -14,8 +14,9 @@ endif
 BINARY  ?= phone$(EXE)
 NUMBER  ?= 13128500205
 COUNTRY ?= CN
+WEB_ADDR ?= 127.0.0.1:8080
 
-.PHONY: all build test race vet fmt run-demo help
+.PHONY: all build test race vet fmt run-demo demo-web help
 
 all: build
 
@@ -45,6 +46,10 @@ run-demo:
 	$(GO) run ./cmd/phone --country $(COUNTRY) $(NUMBER)
 	$(GO) run ./cmd/phone --json --country $(COUNTRY) $(NUMBER)
 
+## demo-web: run the web demo at http://$(WEB_ADDR).
+demo-web:
+	$(GO) run ./examples/web -addr $(WEB_ADDR)
+
 ## help: list the available targets.
 help:
 	@echo "make build     build the phone CLI into ./$(BINARY)"
@@ -53,3 +58,4 @@ help:
 	@echo "make vet       go vet ./..."
 	@echo "make fmt       go fmt ./..."
 	@echo "make run-demo  look up $(NUMBER) with country $(COUNTRY)"
+	@echo "make demo-web  run the web demo at http://$(WEB_ADDR)"

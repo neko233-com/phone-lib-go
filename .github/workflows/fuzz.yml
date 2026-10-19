@@ -1,0 +1,28 @@
+name: Fuzz
+
+on:
+  schedule:
+    # Every Monday at 03:00 UTC.
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fuzz:
+    name: Fuzz Lookup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version: "1.27.x"
+          cache: true
+          cache-dependency-path: go.sum
+
+      - name: Fuzz
+        run: go test -run=^$ -fuzz=FuzzLookup -fuzztime=90s .
