@@ -3,7 +3,7 @@ module github.com/neko233-com/phone-lib-go
 go 1.26.0
 
 require (
-	github.com/nyaruka/phonenumbers/v2 v2.0.14
+	github.com/nyaruka/phonenumbers/v2 v2.0.15
 	golang.org/x/text v0.43.0
 )
 
